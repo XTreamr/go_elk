@@ -1,7 +1,6 @@
-version: '3.3'
+version: "3.3"
 
 services:
-
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
     ports:
@@ -18,6 +17,23 @@ services:
       discovery.type: single-node
     networks:
       - elk
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  logspout:
+    build:
+      context: extensions/logspout
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      ROUTE_URIS: logstash://logstash:5000
+      LOGSTASH_TAGS: docker-elk
+    networks:
+      - elk
+    depends_on:
+      - logstash
+    restart: on-failure
     deploy:
       mode: replicated
       replicas: 1
@@ -56,7 +72,6 @@ services:
       replicas: 1
 
 configs:
-
   elastic_config:
     file: ./elasticsearch/config/elasticsearch.yml
   logstash_config:
