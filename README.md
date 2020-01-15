@@ -14,11 +14,6 @@ Based on the official Docker images from Elastic:
 ## Contents
 
 1. [Requirements](#requirements)
-   - [Host setup](#host-setup)
-   - [SELinux](#selinux)
-   - [Docker for Desktop](#docker-for-desktop)
-     - [Windows](#windows)
-     - [macOS](#macos)
 2. [Usage](#usage)
    - [Bringing up the stack](#bringing-up-the-stack)
    - [Cleanup](#cleanup)
