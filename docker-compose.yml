@@ -14,9 +14,6 @@ services:
       - type: volume
         source: elasticsearch
         target: /usr/share/elasticsearch/data
-    ports:
-      - "9200:9200"
-      - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
       # Use single node discovery in order to disable production mode and avoid bootstrap checks
@@ -24,20 +21,6 @@ services:
       discovery.type: single-node
     networks:
       - elk
-
-  # logspout:
-  #   build:
-  #     context: extensions/logspout
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock:ro
-  #   environment:
-  #     ROUTE_URIS: logstash://logstash:5000
-  #     LOGSTASH_TAGS: docker-elk
-  #   networks:
-  #     - elk
-  #   depends_on:
-  #     - logstash
-  #   restart: on-failure
 
   logstash:
     hostname: logstash
@@ -56,12 +39,6 @@ services:
         source: ./logstash/pipeline
         target: /usr/share/logstash/pipeline
         read_only: true
-    expose:
-      - "5000"
-      - "12201"
-    ports:
-      - "9600:9600"
-      - "5000:5000/udp"
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
